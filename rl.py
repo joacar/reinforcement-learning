@@ -58,29 +58,55 @@ trans = (
 
 '''
 This is the reward matrix 16x4. For each state s and action a,
-rew(s,a) = r = reward value for s doing a
+rew(s,a) = r = reward value for doing a in s
 '''
-rew = ( (0 for a in range(4)) for x in range(16))
+rew = (
+	(0 , 1 , 0 , 0) ,
+	(0 , 0, 0 , 1) ,
+	(0 , 0 , 1 , 0) ,
+	(0 , 0 , 1 , 0) ,
+	(0 , 0 , 1 , 0) ,
+	(0 , 0 , 1 , 0) ,
+	(0 , 1 , 0 , 0),
+	(0 , 1 , 0 , 0),
+	(0 , 1 , 0 , 0),
+	(1 , 0 , 0 , 0),
+	(0 , 0 , -1 , 0),
+	(0 , 0 , -1 , 0),
+	(0 , 1 , 0 , 0),
+	(1, 0 , 0 , 0),
+	(0 , 1, 0 , 0),
+	(0 , 0 , 1, 0),
+)
 
 policy = [ None for s in trans ]
 value = [ 0 for s in trans ]
 
 def argmax(f, args):
 	mi = None
-	m = −1e10
+	m = -1*pow(10,-10)
 	for i in args:
 		v = f(i)
 		if v > m:
-			m= v
+			#print '\tf(',i,') = ', v
+			m = v
 			mi = i
 	return mi
 
 def policyIteration():
+	#global gamma, policy, value, trans, rew
+
 	for p in range(100):
 		for s in range(len(policy)):
-			policy[s]=argmax(
-				lambda(a): rew[s][a]+gamma*value[trans[s][a]], range(4))
+			policy[s] = argmax( lambda a: rew[s][a]+gamma*value[trans[s][a]], range(4))
+			#print 'policy[s]', s, policy[s]
 		for s in range(len(value)):
 			a = policy[s]
-			value[s]= rew[s][a]+gamma*value[trans[s][a]]
+			#print 'policy[',s,'] = ', a
+			value[s] = rew[s][a]+gamma*value[trans[s][a]]
+
+
+policyIteration()
+
+animate.draw(policy)
 	
