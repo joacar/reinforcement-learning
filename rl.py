@@ -159,12 +159,12 @@ class Environment():
 Q = [ [random.random()*0.5 for a in range(4)] for s in range(16)]
 
 epsilon = 0.01
-magic = 0.5
+surprise = 0.5
 s = random.choice(range(16))
 state_sequence = []
 
 def qLearning():
-	global s, gamma, epsilon, magic, state_sequence, trans, rew
+	global s, gamma, epsilon, surprise, state_sequence, trans, rew
 	environment = Environment(trans, rew, s)
 
 	for step in range(100000):
@@ -179,7 +179,7 @@ def qLearning():
 		a_next_list = Q[s_next]
 		a_next = a_next_list.index(max(a_next_list))
 
-		Q[s][a] = Q[s][a] + magic*(r + gamma*Q[s_next][a_next] - Q[s][a])
+		Q[s][a] = Q[s][a] + surprise*(r + gamma*Q[s_next][a_next] - Q[s][a])
 		state_sequence += [s]
 		s = s_next
 
